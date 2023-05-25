@@ -34,4 +34,3 @@ jobs:
                       repo: context.repo.repo,
                     })
                     console.log(tags)
-                
