@@ -24,6 +24,7 @@ jobs:
             - run: npm ci
             - run: cd zx && npm ci
             - run: ls
+            - run: ls zx
             - run: node build.mjs
 
             - uses: actions/github-script@v6
