@@ -20,6 +20,7 @@ jobs:
               uses: actions/setup-node@v3
               with:
                 node-version: ${{ matrix.node-version }}
+            - run: git submodule init
             - run: npm ci
             - run: cd zx && npm ci
             - run: node build.mjs
