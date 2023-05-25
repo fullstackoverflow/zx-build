@@ -23,6 +23,7 @@ jobs:
             - run: git submodule init
             - run: npm ci
             - run: cd zx && npm ci
+            - run: ls
             - run: node build.mjs
 
             - uses: actions/github-script@v6
