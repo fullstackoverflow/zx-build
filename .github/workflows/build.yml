@@ -29,8 +29,23 @@ jobs:
               with:
                   script: |
                     const version = require('./zx/package.json').version
-                    const tags = await github.rest.repos.listTags({
+                    const response = await github.rest.repos.listTags({
                       owner: context.repo.owner,
                       repo: context.repo.repo,
                     })
-                    console.log(tags)
+                    if(response.data.some(i=>i.name===version)){
+                        console.log(`Tag ${version} already exists`)
+                    }else{
+                        const release = await github.rest.repos.createRelease({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          tag_name: version
+                        })
+                        await github.rest.repos.uploadReleaseAsset({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          release_id: release.data.id,
+                          name: 'zx.mjs',
+                          data: require('fs').readFileSync('./dist/zx.mjs')
+                        })
+                    }
