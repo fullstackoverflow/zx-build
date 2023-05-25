@@ -17,7 +17,7 @@ curl -L -o $default_install_dir/zx.mjs https://github.com/fullstackoverflow/zx-b
 SOURCE_STR="PATH=\$PATH:\$HOME/.zx"
 
 if grep -q "$SOURCE_STR" "$HOME/.bashrc"; then
-
+    :
 else
     echo "\\n$SOURCE_STR" >> "$HOME/.bashrc"
 fi
