@@ -1,0 +1,36 @@
+name: daily-build
+
+on:
+    push:
+        branches:
+            - master
+#   schedule:
+#     - cron: '0 0 * * *'
+
+jobs:
+    Build:
+        name: Build
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+              node-version: [lts]
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                node-version: ${{ matrix.node-version }}
+            - run: npm ci
+            - run: cd zx && npm ci
+            - run: node build.mjs
+
+            - uses: actions/github-script@v6
+              with:
+                  script: |
+                    const version = require('./zx/package.json').version
+                    const tags = await github.repos.listTags({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                    })
+                    console.log(tags)
+                
